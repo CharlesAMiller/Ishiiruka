@@ -505,6 +505,17 @@ void CEXISlippi::createNewFile()
 	}
 
 	std::string dirpath = SConfig::GetInstance().m_strSlippiReplayDir;
+	// in case the config value just gets lost somehow
+	if (dirpath.empty())
+	{
+#ifdef _WIN32
+		SConfig::GetInstance().m_strSlippiReplayDir = File::GetHomeDirectory() + "\\Slippi";
+		dirpath = SConfig::GetInstance().m_strSlippiReplayDir;
+#else
+		SConfig::GetInstance().m_strSlippiReplayDir = File::GetHomeDirectory() + DIR_SEP + "Slippi";
+		dirpath = SConfig::GetInstance().m_strSlippiReplayDir;
+#endif
+	}
 
 	// Remove a trailing / or \\ if the user managed to have that in their config
 	char dirpathEnd = dirpath.back();
